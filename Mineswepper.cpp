@@ -10,10 +10,10 @@ using namespace std;
 #define LEFT	75
 #define RIGHT	77
 
-const int MAPX = 20;
-const int MAPY = 20;
+const int MAPX = 10;
+const int MAPY = 10;
 
-const int MINECOUNT = 40;
+const int MINECOUNT = 5;
 
 const char NOMINE = '!';
 const char HASMINE = '@';
@@ -187,6 +187,27 @@ void OpenCurrentDir(int x, int y,bool first)
 	}
 }
 
+bool CheckEnd()
+{
+	int cnt = 0;
+	for (int y = 0; y < MAPY; y++)
+	{
+		for (int x = 0; x < MAPX; x++)
+		{
+			if (showMap[y][x] == NOTOPENED)
+			{
+				cnt++;
+			}
+		}
+	}
+
+	if (cnt == MINECOUNT)
+	{
+		return true;
+	}
+	return false;
+}
+
 int main()
 {
 	int ch;
@@ -220,6 +241,12 @@ int main()
 
 		clrscr();
 		DisplayMap();
+		if (CheckEnd())
+		{
+			clrscr();
+			cout << "Game Clear";
+			exit(0);
+		}
 		Sleep(10);
 	}
 }
