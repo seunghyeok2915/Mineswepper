@@ -10,10 +10,10 @@ using namespace std;
 #define LEFT	75
 #define RIGHT	77
 
-const int MAPX = 10;
-const int MAPY = 10;
+const int MAPX = 20;
+const int MAPY = 20;
 
-const int MINECOUNT = 10;
+const int MINECOUNT = 40;
 
 const char NOMINE = '!';
 const char HASMINE = '@';
@@ -119,7 +119,7 @@ void DisplayMap()
 		}
 	}
 
-	gotoXY(currentX, currentY);
+	gotoXY(currentX * 2, currentY);
 	cout << "■";
 }
 
@@ -143,14 +143,15 @@ void Move(int dir)
 		break;
 	}
 
-	currentX += dir_x * 2;
+	currentX += dir_x;
 	currentY += dir_y;
 }
 
 void OpenCurrentDir(int x, int y,bool first)
 {
 	showMap[y][x] = OPENED;
-	if (GetMineCountAround(x, y) != 0)
+
+	if (mineMap[y][x] == HASMINE)
 	{
 		if (first)
 		{
@@ -164,11 +165,17 @@ void OpenCurrentDir(int x, int y,bool first)
 		}
 	}
 
+	if (GetMineCountAround(x, y) != 0)
+	{
+		if(!first)
+			return;
+	}
+
 	for (int i = -1; i <= 1; i++)
 	{
 		for (int j = -1; j <= 1; j++)
 		{
-			if (i == 0 && j == 0) continue;
+			//if (i == 0 && j == 0) continue;
 			if (GetMineCountAround(x, y) == 0)
 			{
 				if (showMap[y + i][x + j] == NOTOPENED)
